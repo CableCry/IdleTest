@@ -3,11 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+    <link rel="stylesheet" href="css/styles.css"> 
 	<title>My Game</title>
 </head>
-<body id="body">
-    <script type="module" src=""></script>
-    <h1>Idle Game</h1>
+<body id="body" >
+
+    <div>
+        <h1>Idle Game</h1>
+        <ul>
+            <li>Total Money: <span id="moneyTotal">0</span></li>
+            <li>Money per second: <span id="moneyPerSecond">0</span></li>
+
+        </ul>
+    </div>
+
+    <button onClick="addMoney()">Click Me</button>
+
+
+    <script src="js/main.js"></script>
+
 </body>
 </html> 

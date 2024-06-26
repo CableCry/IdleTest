@@ -56,6 +56,9 @@ const gameController = {
     setInterval(() => {
       gameView.updateMoneyDisplay();
     }, 1000 / 20)
+    setInterval(() => {
+      gameModel.addMoney();
+    }, 1000)
   }
   // Future logic
 };

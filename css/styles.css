@@ -173,7 +173,7 @@ button:active {
     justify-content: center;
     align-items: center;
     color: var(--background);
-    
+    z-index: 3;
     font-size: 15px;
     position: relative;
 }
@@ -217,15 +217,6 @@ button:active {
     background-color: var(--surface);
 }
 
-.connection {
-    position: absolute;
-    background-color: var(--text-secondary);
-    height: 2px;
-    transform-origin: 0 0;
-    z-index: 1;
-    opacity: 0.25;
-    box-shadow: 0 0 5px var(--text-secondary);
-}
 
 #addHiddenLayer {
     background-color: var(--secondary-accent);
@@ -310,9 +301,10 @@ button:active {
 /* Adjust the main connection style if needed */
 .connection {
     position: absolute;
-    height: 2px;
     background-color: var(--text-secondary);
-    opacity: 0.25;
+    height: 2px;
     transform-origin: 0 0;
-    z-index: 1;
+    z-index: 0;
+    opacity: 0.25;
+    box-shadow: 0 0 5px var(--text-secondary);
 }

@@ -228,7 +228,7 @@ const gameView = {
 
   createConnection(container, start, end, containerRect, startPoint = 'center', endPoint = 'center', className = 'connection') {
     const connection = document.createElement('div');
-    connection.className = className;
+    connection.className = 'connection';
     const startRect = start.getBoundingClientRect();
     const endRect = end.getBoundingClientRect();
 

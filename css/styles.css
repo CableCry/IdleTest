@@ -236,6 +236,7 @@ button:active {
 }
 
 .condensed-layers {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -245,12 +246,33 @@ button:active {
     border-radius: 10px;
     padding: 10px;
     margin: 0 25px;
+    min-width: 100px; /* Ensure minimum width for content */
 }
 
 .condensed-info, .condensed-neuron-info {
     color: var(--text-secondary);
     font-size: 14px;
     margin-bottom: 5px;
+    z-index: 2; /* Ensure text is above connections */
+}
+
+.connection-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3; /* Ensure dots are above connections */
+}
+
+.left-dot {
+    left: -4px;
+}
+
+.right-dot {
+    right: -4px;
 }
 
 .mini-network {
@@ -259,12 +281,14 @@ button:active {
     width: 80px;
     height: 60px;
     margin-top: 10px;
+    position: relative; /* For positioning mini-connections */
 }
 
 .mini-layer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    z-index: 2; /* Ensure mini-neurons are above mini-connections */
 }
 
 .mini-neuron {
@@ -272,4 +296,23 @@ button:active {
     height: 8px;
     border-radius: 50%;
     background-color: var(--accent);
+}
+
+.mini-connection {
+    position: absolute;
+    height: 2px;
+    background-color: var(--text-secondary);
+    opacity: 0.25;
+    transform-origin: 0 0;
+    z-index: 1;
+}
+
+/* Adjust the main connection style if needed */
+.connection {
+    position: absolute;
+    height: 2px;
+    background-color: var(--text-secondary);
+    opacity: 0.25;
+    transform-origin: 0 0;
+    z-index: 1;
 }

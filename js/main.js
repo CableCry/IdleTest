@@ -42,34 +42,40 @@ const gameModel = {
 
 // View 
 const gameView = {
+
   updateMoneyDisplay() {
     document.getElementById("moneyTotal").innerHTML = gameModel.data.money.total;
     document.getElementById("moneyPerSecond").innerHTML = gameModel.data.money.perSecond;
   },
+
   renderNetwork() {
     const network = document.getElementById('neural-network');
     network.innerHTML = '';
     const layers = gameModel.data.neuralNetwork.layers;
 
     if (layers.length >= 5) {
-        // Render first two layers
-        this.renderLayer(network, layers[0], 'Input', 0);
-        this.renderLayer(network, layers[1], 'Hidden 1', 1);
+      // Render first layer
+      this.renderLayer(network, layers[0], 'Input', 0);
 
-        // Render condensed middle layers
-        this.renderCondensedLayers(network, layers.slice(2, -2), 2);
+      // Render first hidden layer
+      this.renderLayer(network, layers[1], 'Hidden', 1);
 
-        // Render last two layers
-        this.renderLayer(network, layers[layers.length - 2], `Hidden ${layers.length - 2}`, layers.length - 2);
-        this.renderLayer(network, layers[layers.length - 1], 'Output', layers.length - 1);
+      // Render condensed middle layers
+      this.renderCondensedLayers(network, layers.slice(2, -2), 2);
+
+      // Render last hidden layer
+      this.renderLayer(network, layers[layers.length - 2], 'Hidden', layers.length - 2);
+
+      // Render output layer
+      this.renderLayer(network, layers[layers.length - 1], 'Output', layers.length - 1);
     } else {
-        // Render all layers normally
-        layers.forEach((neuronCount, index) => {
-            const label = index === 0 ? 'Input' : 
-                          index === layers.length - 1 ? 'Output' : 
-                          `Hidden ${index}`;
-            this.renderLayer(network, neuronCount, label, index);
-        });
+      // Render all layers normally
+      layers.forEach((neuronCount, index) => {
+        const label = index === 0 ? 'Input' : 
+                      index === layers.length - 1 ? 'Output' : 
+                      'Hidden';
+        this.renderLayer(network, neuronCount, label, index);
+      });
     }
     
     this.drawConnections();
@@ -124,26 +130,35 @@ const gameView = {
 
     const infoElement = document.createElement('div');
     infoElement.className = 'condensed-info';
-    infoElement.textContent = `${layerCount} hidden layers`;
+    infoElement.textContent = 'Black Box';
     condensed.appendChild(infoElement);
 
     const neuronInfo = document.createElement('div');
     neuronInfo.className = 'condensed-neuron-info';
-    neuronInfo.textContent = `${totalNeurons} neurons`;
+    neuronInfo.textContent = `${layerCount} layers, ${totalNeurons} neurons`;
     condensed.appendChild(neuronInfo);
+
+    // Add connection dots on the sides
+    const leftDot = document.createElement('div');
+    leftDot.className = 'connection-dot left-dot';
+    condensed.appendChild(leftDot);
+
+    const rightDot = document.createElement('div');
+    rightDot.className = 'connection-dot right-dot';
+    condensed.appendChild(rightDot);
 
     // Mini network representation
     const miniNetwork = document.createElement('div');
     miniNetwork.className = 'mini-network';
     for (let i = 0; i < 3; i++) {
-        const miniLayer = document.createElement('div');
-        miniLayer.className = 'mini-layer';
-        for (let j = 0; j < 3; j++) {
-            const miniNeuron = document.createElement('div');
-            miniNeuron.className = 'mini-neuron';
-            miniLayer.appendChild(miniNeuron);
-        }
-        miniNetwork.appendChild(miniLayer);
+      const miniLayer = document.createElement('div');
+      miniLayer.className = 'mini-layer';
+      for (let j = 0; j < 3; j++) {
+        const miniNeuron = document.createElement('div');
+        miniNeuron.className = 'mini-neuron';
+        miniLayer.appendChild(miniNeuron);
+      }
+      miniNetwork.appendChild(miniLayer);
     }
     condensed.appendChild(miniNetwork);
 
@@ -153,6 +168,7 @@ const gameView = {
 
     container.appendChild(condensed);
   },
+
   drawConnections() {
     const network = document.getElementById('neural-network');
     const connections = document.querySelectorAll('.connection');
@@ -162,77 +178,137 @@ const gameView = {
     const networkRect = network.getBoundingClientRect();
 
     for (let i = 0; i < layerElements.length - 1; i++) {
-        const currentLayer = layerElements[i];
-        const nextLayer = layerElements[i + 1];
-        
-        let currentNeurons, nextNeurons;
-        
-        if (currentLayer.classList.contains('condensed-layers')) {
-            currentNeurons = currentLayer.querySelectorAll('.mini-neuron');
-        } else {
-            currentNeurons = currentLayer.querySelectorAll('.neuron');
-        }
-        
-        if (nextLayer.classList.contains('condensed-layers')) {
-            nextNeurons = nextLayer.querySelectorAll('.mini-neuron');
-        } else {
-            nextNeurons = nextLayer.querySelectorAll('.neuron');
-        }
+      const currentLayer = layerElements[i];
+      const nextLayer = layerElements[i + 1];
+      
+      let currentNeurons, nextNeurons;
+      let currentEndPoint, nextStartPoint;
+      
+      if (currentLayer.classList.contains('condensed-layers')) {
+        currentNeurons = [currentLayer.querySelector('.right-dot')];
+        currentEndPoint = 'right';
+      } else {
+        currentNeurons = currentLayer.querySelectorAll('.neuron');
+        currentEndPoint = 'center';
+      }
+      
+      if (nextLayer.classList.contains('condensed-layers')) {
+        nextNeurons = [nextLayer.querySelector('.left-dot')];
+        nextStartPoint = 'left';
+      } else {
+        nextNeurons = nextLayer.querySelectorAll('.neuron');
+        nextStartPoint = 'center';
+      }
+
+      currentNeurons.forEach(currentNeuron => {
+        nextNeurons.forEach(nextNeuron => {
+          this.createConnection(network, currentNeuron, nextNeuron, networkRect, currentEndPoint, nextStartPoint);
+        });
+      });
+    }
+
+    // Draw connections inside the black box
+    const blackBox = document.querySelector('.condensed-layers');
+    if (blackBox) {
+      const miniLayers = blackBox.querySelectorAll('.mini-layer');
+      for (let i = 0; i < miniLayers.length - 1; i++) {
+        const currentLayer = miniLayers[i];
+        const nextLayer = miniLayers[i + 1];
+        const currentNeurons = currentLayer.querySelectorAll('.mini-neuron');
+        const nextNeurons = nextLayer.querySelectorAll('.mini-neuron');
 
         currentNeurons.forEach(currentNeuron => {
-            nextNeurons.forEach(nextNeuron => {
-                const connection = document.createElement('div');
-                connection.className = 'connection';
-                const start = currentNeuron.getBoundingClientRect();
-                const end = nextNeuron.getBoundingClientRect();
-
-                // Calculate the center points of the neurons
-                const startCenterX = start.left + start.width / 2;
-                const startCenterY = start.top + start.height / 2;
-                const endCenterX = end.left + end.width / 2;
-                const endCenterY = end.top + end.height / 2;
-
-                // Calculate the angle between the neurons
-                const angle = Math.atan2(endCenterY - startCenterY, endCenterX - startCenterX);
-
-                // Calculate the start and end points on the edges of the neurons
-                const startRadius = start.width / 2;
-                const endRadius = end.width / 2;
-                const startX = startCenterX - networkRect.left + Math.cos(angle) * startRadius;
-                const startY = startCenterY - networkRect.top + Math.sin(angle) * startRadius;
-                const endX = endCenterX - networkRect.left - Math.cos(angle) * endRadius;
-                const endY = endCenterY - networkRect.top - Math.sin(angle) * endRadius;
-
-                // Calculate the length and angle of the connection
-                const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-
-                connection.style.width = `${length}px`;
-                connection.style.left = `${startX}px`;
-                connection.style.top = `${startY}px`;
-                connection.style.transform = `rotate(${angle}rad)`;
-
-                network.appendChild(connection);
-            });
+          nextNeurons.forEach(nextNeuron => {
+            this.createConnection(blackBox, currentNeuron, nextNeuron, blackBox.getBoundingClientRect(), 'center', 'center', 'mini-connection');
+          });
         });
+      }
     }
+  },
+
+  createConnection(container, start, end, containerRect, startPoint = 'center', endPoint = 'center', className = 'connection') {
+    const connection = document.createElement('div');
+    connection.className = className;
+    const startRect = start.getBoundingClientRect();
+    const endRect = end.getBoundingClientRect();
+
+    let startX, startY, endX, endY;
+
+    if (startPoint === 'center') {
+      startX = startRect.left + startRect.width / 2;
+      startY = startRect.top + startRect.height / 2;
+    } else if (startPoint === 'right') {
+      startX = startRect.right;
+      startY = startRect.top + startRect.height / 2;
+    } else if (startPoint === 'left') {
+      startX = startRect.left;
+      startY = startRect.top + startRect.height / 2;
+    }
+
+    if (endPoint === 'center') {
+      endX = endRect.left + endRect.width / 2;
+      endY = endRect.top + endRect.height / 2;
+    } else if (endPoint === 'right') {
+      endX = endRect.right;
+      endY = endRect.top + endRect.height / 2;
+    } else if (endPoint === 'left') {
+      endX = endRect.left;
+      endY = endRect.top + endRect.height / 2;
+    }
+
+    const angle = Math.atan2(endY - startY, endX - startX);
+    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+
+    connection.style.width = `${length}px`;
+    connection.style.left = `${startX - containerRect.left}px`;
+    connection.style.top = `${startY - containerRect.top}px`;
+    connection.style.transform = `rotate(${angle}rad)`;
+
+    container.appendChild(connection);
   },
 
   renderLayerControls() {
     const controlsContainer = document.getElementById('network-controls');
     controlsContainer.innerHTML = '';
-
+  
     const layers = gameModel.data.neuralNetwork.layers;
     layers.forEach((neuronCount, index) => {
       const button = document.createElement('button');
-      button.textContent = `+ ${index === 0 ? 'Input' : index === layers.length - 1 ? 'Output' : 'Hidden ' + index}`;
+      if (index === 0) {
+        button.textContent = '+ Input';
+      } else if (index === layers.length - 1) {
+        button.textContent = '+ Output';
+      } else if (index === 1) {
+        button.textContent = '+ Hidden In';
+      } else if (index === layers.length - 2) {
+        button.textContent = '+ Hidden Out';
+      } 
+      else {
+        // Skip buttons inside the Black Box
+        return;
+      }
       button.dataset.layerIndex = index;
       controlsContainer.appendChild(button);
     });
-
-    const addLayerButton = document.createElement('button');
-    addLayerButton.textContent = '+ Hidden Layer';
-    addLayerButton.id = 'addHiddenLayer';
-    controlsContainer.appendChild(addLayerButton);
+  
+    // Add Black Box controls if there are condensed layers
+    if (layers.length >= 5) {
+      const blackBoxNeuronButton = document.createElement('button');
+      blackBoxNeuronButton.textContent = '+ Black Box Neuron';
+      blackBoxNeuronButton.dataset.action = 'addBlackBoxNeuron';
+      controlsContainer.appendChild(blackBoxNeuronButton);
+  
+      const blackBoxLayerButton = document.createElement('button');
+      blackBoxLayerButton.textContent = '+ Black Box Layer';
+      blackBoxLayerButton.dataset.action = 'addBlackBoxLayer';
+      controlsContainer.appendChild(blackBoxLayerButton);
+    } else {
+      // Only add the "Hidden Layer" button if the black box is not active
+      const addLayerButton = document.createElement('button');
+      addLayerButton.textContent = '+ Hidden Layer';
+      addLayerButton.id = 'addHiddenLayer';
+      controlsContainer.appendChild(addLayerButton);
+    }
   }
 };
 
@@ -252,13 +328,18 @@ const gameController = {
       gameModel.addMoney();
       gameView.updateMoneyDisplay();
     });
+
     // Use event delegation for network control buttons
     document.getElementById('network-controls').addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON') {
         if (event.target.id === 'addHiddenLayer') {
           this.addNewHiddenLayer();
+        } else if (event.target.dataset.action === 'addBlackBoxNeuron') {
+          this.addBlackBoxNeuron();
+        } else if (event.target.dataset.action === 'addBlackBoxLayer') {
+          this.addBlackBoxLayer();
         } else {
-          const layerIndex = parseInt(event.target.dataset.layerIndex);          
+          const layerIndex = parseInt(event.target.dataset.layerIndex);
           this.updateNetwork(layerIndex, 'add');
         }
       }
@@ -283,6 +364,24 @@ const gameController = {
   addNewHiddenLayer() {
     gameModel.addHiddenLayer();
     gameView.renderNetwork();
+  },
+  addBlackBoxNeuron() {
+    const layers = gameModel.data.neuralNetwork.layers;
+    if (layers.length >= 5) {
+      // Add a neuron to a random layer within the Black Box
+      const randomIndex = Math.floor(Math.random() * (layers.length - 4)) + 2;
+      gameModel.addNeuron(randomIndex);
+      gameView.renderNetwork();
+    }
+  },
+  addBlackBoxLayer() {
+    const layers = gameModel.data.neuralNetwork.layers;
+    if (layers.length >= 5) {
+      // Insert a new layer with 1 neuron at a random position within the Black Box
+      const randomIndex = Math.floor(Math.random() * (layers.length - 4)) + 2;
+      gameModel.data.neuralNetwork.layers.splice(randomIndex, 0, 1);
+      gameView.renderNetwork();
+    }
   }
 };
 

@@ -1,5 +1,80 @@
+:root {
+    --background: #1E1A17;  /* Darker beige-tinted background */
+    --text-primary: #F0E6D2;  /* Light beige for primary text */
+    --text-secondary: #D0C8B0;  /* Slightly darker beige for secondary text */
+    --accent: #C19A6B;  /* Warm beige accent */
+    --secondary-accent: #8B7355;  /* Darker beige secondary accent */
+    --error: #B22222;  /* Muted red, slightly warmer */
+    --surface: #2A2520;  /* Slightly lighter than background, with beige tint */
+    --border: #3D3833;  /* Dark beige border color */
+}
+
+
+
+
 body {
     font-family: monospace, sans-serif;
     margin: 0;
     padding: 20px;
+    background-color: var(--background);
+    color: var(--text-primary);
+
 }
+
+.primary-text {
+    color: var(--text-primary)
+}
+
+.secondary-text {
+    color: var(--text-secondary);
+}
+
+.accent {
+    color: var(--accent);
+}
+
+.secondary-accent {
+    color: var(--secondary-accent);
+}
+
+.error {
+    color: var(--error);
+}
+
+.surface {
+    background-color: var(--surface);
+}
+
+.border {
+    border-color: var(--border);
+}
+
+button {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border: none;
+}
+
+button:hover {
+    background-color: var(--border);
+}
+
+button:active {
+    background-color: var(--surface);
+}
+
+.buttonMain {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: var(--border) 0px 1px 2px;
+}
+
+.info {
+    background-color: var(--surface);
+    padding: 1px 10px;
+    margin-right: 40vw;
+    border-radius: 10px;
+    box-shadow: var(--border) 0px 1px 2px;
+}
+

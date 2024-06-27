@@ -63,12 +63,13 @@ button:active {
     background-color: var(--surface);
 }
 
-.buttonMain {
+.button-main {
     margin-top: 10px;
     padding: 10px 15px;
     border-radius: 5px;
     box-shadow: var(--border) 0px 1px 2px;
 }
+
 
 .info {
     background-color: var(--surface);
@@ -77,4 +78,12 @@ button:active {
     border-radius: 10px;
     box-shadow: var(--border) 0px 1px 2px;
 }
-
+.title-blinker {
+    animation: blinker 1s step-start infinite;
+  }
+  
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }

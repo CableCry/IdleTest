@@ -102,10 +102,11 @@ button:active {
 }
 
 .button-main {
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 10px 15px;
     border-radius: 5px;
     box-shadow: var(--border) 0px 1px 2px;
+    cursor: pointer;
 }
 
 
@@ -140,6 +141,7 @@ button:active {
     align-items: center;      
     width: 100%;
     height: 100%;
+    margin-top: 20px;
     position: relative;
 }
 
@@ -147,7 +149,7 @@ button:active {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 25px;  /* Changed from margin-right to symmetric margin */
+    margin: 0 25px; 
 }
 
 .layer .neurons {
@@ -193,16 +195,18 @@ button:active {
 
 
 #network-controls {
+    background-color: var(--surface);
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    margin-top: 20px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 
 #network-controls button {
     margin: 5px;
     padding: 5px 10px;
-    background-color: var(--surface);
+    background-color: var(--border);
     color: var(--text-primary);
     border: 1px solid var(--border);
     border-radius: 5px;
@@ -210,7 +214,7 @@ button:active {
 }
 
 #network-controls button:hover {
-    background-color: var(--border);
+    background-color: var(--surface);
 }
 
 .connection {
@@ -221,4 +225,51 @@ button:active {
     z-index: 1;
     opacity: 0.25;
     box-shadow: 0 0 5px var(--text-secondary);
+}
+
+#addHiddenLayer {
+    background-color: var(--secondary-accent);
+}
+
+#addHiddenLayer:hover {
+    background-color: var(--accent);
+}
+
+.condensed-layers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0 25px;
+}
+
+.condensed-info, .condensed-neuron-info {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.mini-network {
+    display: flex;
+    justify-content: space-between;
+    width: 80px;
+    height: 60px;
+    margin-top: 10px;
+}
+
+.mini-layer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mini-neuron {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent);
 }

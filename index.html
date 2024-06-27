@@ -4,23 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css"> 
-	<title>My Game</title>
+    <title>My Game</title>
 </head>
-<body id="body" >
-
+<body id="body">
     <div>
-        <h1 class="title">Strt-Up<span class="title-blinker">_</span></h1>
-            <div class="info">
-                <p>Total Money: <span id="moneyTotal">0</span></p>
-                <p>Money per second: <span id="moneyPerSecond">0</span></p>
-            </div>
+        <div>
+            <h1 class="typewriter">Strt-Up</h1>
+        </div>
+        <div class="info">
+            <p>Total Money: <span id="moneyTotal">0</span></p>
+            <p>Money per second: <span id="moneyPerSecond">0</span></p>
+        </div>
         <button class="button-main" id="clickMe">Train Model</button>
+        <div id="neural-network" class="neurons"></div>
+        <div id="network-controls">
+            <ul>
+                <button id="addNeuronInput"> + Input</button>
+                <button id="removeNeuronInput"> - Input</button>
+            </ul>
+            <ul>
+                <button id="addNeuronHidden"> + Hidden</button>
+                <button id="removeNeuronHidden"> - Hidden</button>
+            </ul>
+            <ul>
+                <button id="addNeuronOutput"> + Output</button>
+                <button id="removeNeuronOutput"> - Output</button>
+            </ul>
+        </div>
     </div>
-    
-
-
-
     <script src="js/main.js"></script>
-
 </body>
-</html> 
+</html>

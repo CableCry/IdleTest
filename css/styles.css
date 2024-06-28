@@ -130,7 +130,7 @@ button:active {
     padding: 20px;
     box-sizing: border-box;
     overflow: hidden;  
-    display: flex;    
+    display: flex;
     justify-content: center;  
     align-items: center;  
 }

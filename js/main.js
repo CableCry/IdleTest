@@ -115,7 +115,6 @@ const gameView = {
     labelElement.textContent = label;
     layer.appendChild(labelElement);
 
-    // Add a data attribute to the layer for identification
     layer.dataset.layerIndex = layerIndex;
 
     container.appendChild(layer);
@@ -138,7 +137,6 @@ const gameView = {
     neuronInfo.textContent = `${layerCount} layers, ${totalNeurons} neurons`;
     condensed.appendChild(neuronInfo);
 
-    // Add connection dots on the sides
     const leftDot = document.createElement('div');
     leftDot.className = 'connection-dot left-dot';
     condensed.appendChild(leftDot);
@@ -162,7 +160,6 @@ const gameView = {
     }
     condensed.appendChild(miniNetwork);
 
-    // Add data attributes to the condensed layers for identification
     condensed.dataset.startIndex = startIndex;
     condensed.dataset.endIndex = startIndex + middleLayers.length - 1;
 
@@ -291,7 +288,7 @@ const gameView = {
       controlsContainer.appendChild(button);
     });
   
-    // Add Black Box controls if there are condensed layers
+    
     if (layers.length >= 5) {
       const blackBoxNeuronButton = document.createElement('button');
       blackBoxNeuronButton.textContent = '+ Black Box Neuron';
@@ -303,7 +300,7 @@ const gameView = {
       blackBoxLayerButton.dataset.action = 'addBlackBoxLayer';
       controlsContainer.appendChild(blackBoxLayerButton);
     } else {
-      // Only add the "Hidden Layer" button if the black box is not active
+  
       const addLayerButton = document.createElement('button');
       addLayerButton.textContent = '+ Hidden Layer';
       addLayerButton.id = 'addHiddenLayer';
@@ -318,18 +315,18 @@ const gameView = {
         randomNeuron.classList.add('active');
         setTimeout(() => {
             randomNeuron.classList.remove('active');
-        }, 2000); // Remove active class after 2 seconds
+        }, 2000); // Remove active class
     }
   },
 
-activateRandomMiniNeuron() {
+  activateRandomMiniNeuron() {
     const miniNeurons = document.querySelectorAll('.mini-neuron:not(.active)');
     if (miniNeurons.length > 0) {
         const randomMiniNeuron = miniNeurons[Math.floor(Math.random() * miniNeurons.length)];
         randomMiniNeuron.classList.add('active');
         setTimeout(() => {
             randomMiniNeuron.classList.remove('active');
-        }, 2000); // Remove active class after 2 seconds
+        }, 2000); // Remove active class
     }
   }
 };
@@ -351,7 +348,6 @@ const gameController = {
       gameView.updateMoneyDisplay();
     });
 
-    // Use event delegation for network control buttons
     document.getElementById('network-controls').addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON') {
         if (event.target.id === 'addHiddenLayer') {
@@ -392,7 +388,6 @@ const gameController = {
   addBlackBoxNeuron() {
     const layers = gameModel.data.neuralNetwork.layers;
     if (layers.length >= 5) {
-      // Add a neuron to a random layer within the Black Box
       const randomIndex = Math.floor(Math.random() * (layers.length - 4)) + 2;
       gameModel.addNeuron(randomIndex);
       gameView.renderNetwork();
@@ -401,7 +396,6 @@ const gameController = {
   addBlackBoxLayer() {
     const layers = gameModel.data.neuralNetwork.layers;
     if (layers.length >= 5) {
-      // Insert a new layer with 1 neuron at a random position within the Black Box
       const randomIndex = Math.floor(Math.random() * (layers.length - 4)) + 2;
       gameModel.data.neuralNetwork.layers.splice(randomIndex, 0, 1);
       gameView.renderNetwork();

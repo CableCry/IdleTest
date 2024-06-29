@@ -309,6 +309,28 @@ const gameView = {
       addLayerButton.id = 'addHiddenLayer';
       controlsContainer.appendChild(addLayerButton);
     }
+  },
+
+  activateRandomNeuron() {
+    const neurons = document.querySelectorAll('.neuron:not(.active)');
+    if (neurons.length > 0) {
+        const randomNeuron = neurons[Math.floor(Math.random() * neurons.length)];
+        randomNeuron.classList.add('active');
+        setTimeout(() => {
+            randomNeuron.classList.remove('active');
+        }, 2000); // Remove active class after 2 seconds
+    }
+  },
+
+activateRandomMiniNeuron() {
+    const miniNeurons = document.querySelectorAll('.mini-neuron:not(.active)');
+    if (miniNeurons.length > 0) {
+        const randomMiniNeuron = miniNeurons[Math.floor(Math.random() * miniNeurons.length)];
+        randomMiniNeuron.classList.add('active');
+        setTimeout(() => {
+            randomMiniNeuron.classList.remove('active');
+        }, 2000); // Remove active class after 2 seconds
+    }
   }
 };
 
@@ -350,7 +372,9 @@ const gameController = {
   startGameLoop() {
     setInterval(() => {
       gameView.updateMoneyDisplay();
-    }, 1000 / 20);
+      gameView.activateRandomNeuron();
+      gameView.activateRandomMiniNeuron();
+    }, 1000 / 2);
     setInterval(() => {
       gameModel.addMoney();
     }, 1000);

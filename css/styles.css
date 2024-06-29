@@ -7,6 +7,11 @@
     --error: #B22222;  /* Muted red, slightly warmer */
     --surface: #2A2520;  /* Slightly lighter than background, with beige tint */
     --border: #3D3833;  /* Dark beige border color */
+    
+    /* New accent colors */
+    --accent-teal: #5F9EA0;
+    --accent-terracotta: #E27D60;
+    --accent-sage: #8FBC8F;
 }
 
 .primary-text {
@@ -166,9 +171,9 @@ button:active {
 .neuron {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    border-radius: 100%;
     background-color: var(--accent);
-    margin: 5px 0;
+    margin: 10px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -176,6 +181,38 @@ button:active {
     z-index: 3;
     font-size: 15px;
     position: relative;
+    transition: all 0.3s ease;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 var(--accent);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px var(--accent);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 var(--accent);
+    }
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px var(--accent-sage);
+    }
+    50% {
+        box-shadow: 0 0 7px var(--accent-teal), 0 0 10px var(--accent-terracotta);
+    }
+    100% {
+        box-shadow: 0 0 5px var(--accent-sage);
+    }
+}
+
+.neuron.active {
+    animation: pulse 1s infinite, glow 2s infinite;
 }
 
 .ellipsis {
@@ -287,6 +324,12 @@ button:active {
     height: 8px;
     border-radius: 50%;
     background-color: var(--accent);
+    transition: all 0.3s ease;
+}
+
+/* New class for active mini-neurons */
+.mini-neuron.active {
+    animation: glow 2s infinite;
 }
 
 .mini-connection {
